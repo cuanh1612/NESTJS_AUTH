@@ -1,18 +1,22 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ConfigService } from '@nestjs/config/dist';
+import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import * as Joi from 'joi';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { Post } from './posts/entities/post.entity';
-import { PostsModule } from './posts/posts.module';
-import { Profile } from './profiles/entities/profile.entity';
-import { ProfilesModule } from './profiles/profiles.module';
-import { User } from './users/entities/user.entity';
-import { UsersModule } from './users/users.module';
-import { AuthenticationService } from './authentication/authentication.service';
-import { AuthenticationModule } from './authentication/authentication.module';
-import * as Joi from 'joi';
+import databaseConfig from './config/database.config';
+import { AuthenticationModule } from './modules/authentication/authentication.module';
+import { CommunitiesModule } from './modules/communities/communities.module';
+import { Community } from './modules/communities/entities/community.entity';
+import { Post } from './modules/posts/entities/post.entity';
+import { PostsModule } from './modules/posts/posts.module';
+import { Profile } from './modules/profiles/entities/profile.entity';
+import { ProfilesModule } from './modules/profiles/profiles.module';
+import { User } from './modules/users/entities/user.entity';
+import { UsersModule } from './modules/users/users.module';
+import { ReportService } from './scheduling/report.service';
 
 @Module({
   imports: [
@@ -24,18 +28,19 @@ import * as Joi from 'joi';
         PASSWORD: Joi.string().required(),
         DATABASE: Joi.string().required(),
       }),
+      load: [databaseConfig],
     }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
+      imports: [ConfigModule, ScheduleModule.forRoot()],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
         return {
           type: 'postgres',
           port: 5432,
-          database: configService.get('DATABASE'),
-          password: configService.get('PASSWORD'),
-          username: configService.get('USER'),
-          entities: [User, Profile, Post],
+          database: configService.get('database.database'),
+          password: configService.get('database.password'),
+          username: configService.get('database.username'),
+          entities: [User, Profile, Post, Community],
           logging: true,
           synchronize: true,
         };
@@ -45,8 +50,9 @@ import * as Joi from 'joi';
     ProfilesModule,
     PostsModule,
     AuthenticationModule,
+    CommunitiesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ReportService],
 })
 export class AppModule {}
