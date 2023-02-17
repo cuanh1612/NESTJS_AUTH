@@ -1,6 +1,4 @@
-import { Community } from 'src/modules/communities/entities/community.entity';
-import { Post } from 'src/modules/posts/entities/post.entity';
-import { Profile } from 'src/modules/profiles/entities/profile.entity';
+import { Post } from '../../posts/entities/post.entity';
 import {
   Column,
   Entity,
@@ -10,6 +8,8 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Profile } from '../../profiles/entities/profile.entity';
+import { Community } from '../../communities/entities/community.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -34,7 +34,7 @@ export class User {
   @Column()
   createAt: Date;
 
-  @OneToOne(() => Profile)
+  @OneToOne(() => Profile, (profile) => profile.id)
   @JoinColumn()
   profile: Profile;
 

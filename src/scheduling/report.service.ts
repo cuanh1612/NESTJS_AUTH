@@ -17,7 +17,7 @@ export class ReportService {
     name: 'report',
   })
   triggerNotifications() {
-    console.log('Trigger notification every 30 second');
+    console.log('Trigger notification every 10 second');
   }
 
   @Timeout(30000)

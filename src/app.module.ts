@@ -6,7 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import databaseConfig from './config/database.config';
+import databaseConfig from './config/databaseEnv.config';
 import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { CommunitiesModule } from './modules/communities/communities.module';
 import { Community } from './modules/communities/entities/community.entity';
@@ -30,8 +30,9 @@ import { ReportService } from './scheduling/report.service';
       }),
       load: [databaseConfig],
     }),
+    ScheduleModule.forRoot(),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule, ScheduleModule.forRoot()],
+      imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
         return {
@@ -42,7 +43,7 @@ import { ReportService } from './scheduling/report.service';
           username: configService.get('database.username'),
           entities: [User, Profile, Post, Community],
           logging: true,
-          synchronize: true,
+          synchronize: false,
         };
       },
     }),
