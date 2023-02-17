@@ -7,10 +7,10 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { Roles } from 'src/decorators/roles.decorator';
+import { Roles } from 'src/common/decorators/roles.decorator';
 import { Role } from 'src/enums/role.enum';
-import JwtAuthenticationGuard from 'src/guards/jwt-authentication.guard';
-import { RolesGuard } from 'src/guards/roles.guard';
+import JwtAuthenticationGuard from 'src/common/guards/jwt-authentication.guard';
+import { RolesGuard } from 'src/common/guards/roles.guard';
 import { CommunitiesService } from './communities.service';
 import { AssignUserDto } from './dto/assign-user.dto';
 import { CreateCommunityDto } from './dto/create-community.dto';

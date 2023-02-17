@@ -1,6 +1,6 @@
 import { Body, Controller, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common/decorators';
-import JwtAuthenticationGuard from 'src/guards/jwt-authentication.guard';
+import JwtAuthenticationGuard from 'src/common/guards/jwt-authentication.guard';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostsService } from './posts.service';
 

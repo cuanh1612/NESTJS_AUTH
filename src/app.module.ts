@@ -16,7 +16,7 @@ import { Profile } from './modules/profiles/entities/profile.entity';
 import { ProfilesModule } from './modules/profiles/profiles.module';
 import { User } from './modules/users/entities/user.entity';
 import { UsersModule } from './modules/users/users.module';
-import { ReportService } from './scheduling/report.service';
+import { ReportService } from './common/scheduling/report.service';
 
 @Module({
   imports: [
