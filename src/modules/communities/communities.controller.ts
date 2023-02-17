@@ -8,7 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Roles } from 'src/common/decorators/roles.decorator';
-import { Role } from 'src/enums/role.enum';
+import { Role } from 'src/common/enums/role.enum';
 import JwtAuthenticationGuard from 'src/common/guards/jwt-authentication.guard';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { CommunitiesService } from './communities.service';
