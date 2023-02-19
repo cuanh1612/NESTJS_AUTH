@@ -20,6 +20,7 @@ import { UsersModule } from './modules/users/users.module';
 import { MessageProducerService } from './modules/message_producer/message_producer.service';
 import { MessageConsumer } from './common/consumers/message.consumer';
 import { GatewayModule } from './gateway/gateway.module';
+import { EmailModule } from './modules/email/email.module';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { GatewayModule } from './gateway/gateway.module';
     AuthenticationModule,
     CommunitiesModule,
     GatewayModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [

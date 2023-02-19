@@ -1,26 +1,37 @@
 import {
   MessageBody,
   SubscribeMessage,
-  WebSocketGateway
+  WebSocketGateway,
+  WebSocketServer,
+  WsException,
 } from '@nestjs/websockets';
-import { WebSocketServer } from '@nestjs/websockets/decorators';
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 
-@WebSocketGateway()
+@WebSocketGateway({
+  cors: {
+    origin: '*',
+  },
+})
 export class MyGateway {
   @WebSocketServer()
   server: Server;
 
-  onModuleInit() {
-    this.server.on('connection', (socket) => {
-      console.log(socket.id);
-      console.log('Connected');
-    });
+  handleConnection(client: Socket, ...args: any[]) {
+    console.log(`Connected ${client.id}`);
+    //Do stuffs
+  }
+
+  handleDisconnect(client: Socket) {
+    console.log(`Disconnected: ${client.id}`);
   }
 
   @SubscribeMessage('newMessage')
   onNewMessage(@MessageBody() body: any) {
     console.log(body);
-    return body;
+    this.server.emit('onMessage', {
+      msg: 'New Message',
+      content: body,
+    });
+    throw new WsException('Invalid credential');
   }
 }

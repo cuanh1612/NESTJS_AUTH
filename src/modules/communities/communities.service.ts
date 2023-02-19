@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
+import { UsersService } from '../users/users.service';
 import { AssignUserDto } from './dto/assign-user.dto';
 import { CreateCommunityDto } from './dto/create-community.dto';
 import { RemoveAssignUserDto } from './dto/remove-assign-user.dto';
@@ -14,6 +15,7 @@ export class CommunitiesService {
     private communityRepository: Repository<Community>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private userService: UsersService,
   ) {}
 
   create(createCommunityDto: CreateCommunityDto) {
@@ -40,7 +42,7 @@ export class CommunitiesService {
   }
 
   async assignUser(dataAssign: AssignUserDto) {
-    const user = await this.userRepository.findOneBy({ id: dataAssign.userId });
+    const user = await this.userService.getById(dataAssign.userId);
     const community = await this.communityRepository.findOne({
       where: {
         id: dataAssign.communityId,
@@ -67,9 +69,7 @@ export class CommunitiesService {
   }
 
   async removeAssign(dataRemoveAssignUser: RemoveAssignUserDto) {
-    const user = await this.userRepository.findOneBy({
-      id: dataRemoveAssignUser.userId,
-    });
+    const user = await this.userService.getById(dataRemoveAssignUser.userId);
     const community = await this.communityRepository.findOne({
       where: {
         id: dataRemoveAssignUser.communityId,

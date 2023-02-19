@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
 import { Post } from './entities/post.entity';
-import { CreatePostParams } from './utils/types';
+import { CreatePostParams, UpdatePostParams } from './utils/types';
 
 @Injectable()
 export class PostsService {
@@ -23,5 +23,17 @@ export class PostsService {
 
     const newPost = this.postRepository.create({ ...createPostDetails, user });
     return this.postRepository.save(newPost);
+  }
+
+  updatePost(id: number, updatePostDetails: UpdatePostParams) {
+    return this.postRepository.update({ id }, { ...updatePostDetails });
+  }
+
+  deletePost(id: number) {
+    return this.postRepository.delete({ id });
+  }
+
+  getAllPost() {
+    return this.postRepository.find();
   }
 }
