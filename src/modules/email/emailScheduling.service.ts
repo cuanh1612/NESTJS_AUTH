@@ -14,17 +14,15 @@ export default class EmailSchedulingService {
   scheduleEmail(emailSchedule: EmailScheduleDto) {
     const date = new Date(emailSchedule.date);
     const job = new CronJob(date, () => {
-      this.emailService.sendMail({
-        to: emailSchedule.recipient,
-        subject: emailSchedule.subject,
-        text: emailSchedule.content,
-      });
+      this.emailService.sendMail(emailSchedule);
     });
 
     this.schedulerRegistry.addCronJob(
       `${Date.now()} - ${emailSchedule.subject}`,
       job,
     );
+
+    job.start();
   }
 
   cancelAllScheduledEmails() {

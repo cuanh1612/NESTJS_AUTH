@@ -18,6 +18,7 @@ export default class EmailService {
   }
 
   sendMail(options: Mail.Options) {
-    return this.nodemailerTransport.sendMail(options);
+    return console.log(`Send mail at ${options.date}`);
+    // return this.nodemailerTransport.sendMail(options);
   }
 }
