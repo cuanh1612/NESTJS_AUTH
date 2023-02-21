@@ -28,8 +28,6 @@ export class TransformInterceptor<T>
       context.getHandler(),
     );
 
-    console.log(requiredMessage);
-
     return next.handle().pipe(
       map((data) => {
         return {
