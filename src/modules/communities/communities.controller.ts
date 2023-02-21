@@ -7,6 +7,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { Messages } from 'src/common/decorators/message.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Role } from 'src/common/enums/role.enum';
 import JwtAuthenticationGuard from 'src/common/guards/jwt-authentication.guard';
@@ -22,6 +23,7 @@ export class CommunitiesController {
 
   @Post()
   @Roles(Role.Admin)
+  @Messages('Add community success')
   @UseGuards(JwtAuthenticationGuard, RolesGuard)
   create(@Body() createCommunityDto: CreateCommunityDto) {
     return this.communitiesService.create(createCommunityDto);
