@@ -6,6 +6,8 @@ import { RegisterDto } from './dto/register.dto';
 import { TokenPayload } from './interfaces/tokenPayload.interface';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 
 @Injectable()
 export class AuthenticationService {
@@ -13,31 +15,31 @@ export class AuthenticationService {
     private readonly usersService: UsersService,
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
+    @InjectQueue('mail-queue') private mailQueue: Queue,
   ) {}
 
   async register(registrationData: RegisterDto) {
     const hashedPassword = await bcrypt.hash(registrationData.password, 10);
 
-    try {
-      const createdUser = await this.usersService.createUser({
-        ...registrationData,
-        password: hashedPassword,
-      });
-      createdUser.password = '';
-      return createdUser;
-    } catch (error) {
-      if (error?.code === PostgresErrorCode.UniqueViolation) {
-        throw new HttpException(
-          'User with that email already exists',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
+    const createdUser = await this.usersService.createUser({
+      ...registrationData,
+      password: hashedPassword,
+    });
 
-      throw new HttpException(
-        'Something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    await this.mailQueue.add(
+      'send-mail',
+      {
+        recipient: registrationData.email,
+        subject: 'Register success',
+        content: 'Register success',
+      },
+      {
+        removeOnComplete: true,
+      },
+    );
+
+    createdUser.password = '';
+    return createdUser;
   }
 
   async getAuthenticatedUser(email: string, plainTextPassword: string) {

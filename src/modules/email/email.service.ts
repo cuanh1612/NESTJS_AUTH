@@ -39,11 +39,12 @@ export default class EmailService {
           accessToken: `${accessToken}`,
         },
       });
-      return this.nodemailerTransport.sendMail({
+      await this.nodemailerTransport.sendMail({
         to: options.recipient,
         subject: options.subject,
         text: options.content,
       });
+      console.log(`Send mail to ${options.recipient} success`);
     } catch (error) {
       console.log(error);
     }
