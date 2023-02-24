@@ -10,10 +10,10 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { Role } from 'src/common/enums/role.enum';
-import JwtAuthenticationGuard from 'src/common/guards/jwt-authentication.guard';
-import { RolesGuard } from 'src/common/guards/roles.guard';
+import { Roles } from '../../common/decorators/roles.decorator';
+import { Role } from '../../common/enums/role.enum';
+import JwtAuthenticationGuard from '../../common/guards/jwt-authentication.guard';
+import { RolesGuard } from '../../common/guards/roles.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';

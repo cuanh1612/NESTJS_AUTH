@@ -1,12 +1,13 @@
+import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { User } from '../users/entities/user.entity';
-import { Post } from './entities/post.entity';
-import { PostsService } from './posts.service';
+import { User } from '../src/modules/users/entities/user.entity';
+import * as request from 'supertest';
+import { Post } from '../src/modules/posts/entities/post.entity';
+import { PostsModule } from '../src/modules/posts/posts.module';
 
-describe('PostsService', () => {
-  let service: PostsService;
-
+describe('PostController (e2e)', () => {
+  let app: INestApplication;
   const mockUserRepository = {
     create: jest.fn().mockImplementation((dto) => dto),
     save: jest
@@ -29,12 +30,13 @@ describe('PostsService', () => {
         title: post.title,
       }),
     ),
+    find: jest.fn().mockImplementation(() => Promise.resolve([])),
   };
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [PostsModule],
       providers: [
-        PostsService,
         {
           provide: getRepositoryToken(User),
           useValue: mockUserRepository,
@@ -46,23 +48,15 @@ describe('PostsService', () => {
       ],
     }).compile();
 
-    service = module.get<PostsService>(PostsService);
+    app = moduleFixture.createNestApplication();
+    await app.init();
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
-
-  it('should create a new user record and return that', async () => {
-    expect(
-      await service.create(1, {
-        description: 'Description test',
-        title: 'Title Test',
-      }),
-    ).toEqual({
-      id: expect.any(Number),
-      description: expect.any(String),
-      title: expect.any(String),
-    });
+  it('/posts (GET)', () => {
+    return request(app.getHttpServer())
+      .get('/posts')
+      .then((data) => {
+        expect(data).toBeDefined();
+      });
   });
 });

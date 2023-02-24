@@ -7,11 +7,11 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { Messages } from 'src/common/decorators/message.decorator';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { Role } from 'src/common/enums/role.enum';
-import JwtAuthenticationGuard from 'src/common/guards/jwt-authentication.guard';
-import { RolesGuard } from 'src/common/guards/roles.guard';
+import { Messages } from '../../common/decorators/message.decorator';
+import { Roles } from '../../common/decorators/roles.decorator';
+import { Role } from '../../common/enums/role.enum';
+import JwtAuthenticationGuard from '../../common/guards/jwt-authentication.guard';
+import { RolesGuard } from '../../common/guards/roles.guard';
 import { CommunitiesService } from './communities.service';
 import { AssignUserDto } from './dto/assign-user.dto';
 import { CreateCommunityDto } from './dto/create-community.dto';

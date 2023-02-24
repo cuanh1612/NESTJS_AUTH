@@ -1,5 +1,5 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
-import JwtAuthenticationGuard from 'src/common/guards/jwt-authentication.guard';
+import JwtAuthenticationGuard from '../../common/guards/jwt-authentication.guard';
 import EmailScheduleDto from './dto/emailSchedule.dto';
 import EmailSchedulingService from './emailScheduling.service';
 

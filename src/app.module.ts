@@ -24,6 +24,7 @@ import { ProfilesModule } from './modules/profiles/profiles.module';
 import { User } from './modules/users/entities/user.entity';
 import { UsersModule } from './modules/users/users.module';
 import { PaymentsModule } from './modules/payments/payments.module';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -66,6 +67,7 @@ import { PaymentsModule } from './modules/payments/payments.module';
     GatewayModule,
     EmailModule,
     PaymentsModule,
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [

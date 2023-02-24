@@ -5,7 +5,7 @@ import {
   SchedulerRegistry,
   Timeout,
 } from '@nestjs/schedule';
-import { UsersService } from 'src/modules/users/users.service';
+import { UsersService } from '../../modules/users/users.service';
 
 @Injectable()
 export class ReportService {

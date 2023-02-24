@@ -6,7 +6,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import JwtAuthenticationGuard from 'src/common/guards/jwt-authentication.guard';
+import JwtAuthenticationGuard from '../../common/guards/jwt-authentication.guard';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { ProfilesService } from './profiles.service';
 

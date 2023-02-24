@@ -9,8 +9,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
-import JwtAuthenticationGuard from 'src/common/guards/jwt-authentication.guard';
-import { LocalAuthenticationGuard } from 'src/common/guards/localAuthentication.guard';
+import JwtAuthenticationGuard from '../../common/guards/jwt-authentication.guard';
+import { LocalAuthenticationGuard } from '../../common/guards/localAuthentication.guard';
 import { AuthenticationService } from './authentication.service';
 import { RegisterDto } from './dto/register.dto';
 import RequestWithUser from './interfaces/requestWithUser.interface';

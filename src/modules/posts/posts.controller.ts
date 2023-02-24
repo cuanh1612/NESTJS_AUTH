@@ -2,13 +2,14 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   ParseIntPipe,
   Patch,
   Post,
 } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common/decorators';
-import JwtAuthenticationGuard from 'src/common/guards/jwt-authentication.guard';
+import JwtAuthenticationGuard from '../../common/guards/jwt-authentication.guard';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostsService } from './posts.service';
@@ -17,7 +18,7 @@ import { PostsService } from './posts.service';
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
-  @Post(':userId')
+  @Get('')
   @UseGuards(JwtAuthenticationGuard)
   getAll() {
     return this.postsService.getAllPost();

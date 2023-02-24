@@ -4,6 +4,7 @@ import { OAuth2Client } from 'google-auth-library';
 import { google } from 'googleapis';
 import { createTransport } from 'nodemailer';
 import * as Mail from 'nodemailer/lib/mailer';
+import EmailScheduleDto from './dto/emailSchedule.dto';
 
 @Injectable()
 export default class EmailService {
@@ -23,7 +24,7 @@ export default class EmailService {
     this.oAuth2Client = oAuth2Client;
   }
 
-  async sendMail(options: Mail.Options) {
+  async sendMail(options: EmailScheduleDto) {
     try {
       const accessToken = await this.oAuth2Client.getAccessToken();
 
@@ -38,7 +39,11 @@ export default class EmailService {
           accessToken: `${accessToken}`,
         },
       });
-      return this.nodemailerTransport.sendMail(options);
+      return this.nodemailerTransport.sendMail({
+        to: options.recipient,
+        subject: options.subject,
+        text: options.content,
+      });
     } catch (error) {
       console.log(error);
     }
